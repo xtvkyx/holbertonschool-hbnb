@@ -4,10 +4,12 @@ from __future__ import annotations
 from flask import request
 from flask_restx import Namespace, Resource, fields
 
-from hbnb.facade.hbnb_facade import HBnBFacade
+from hbnb.facade import get_facade
+facade = get_facade()
+
 
 users_api = Namespace("users", description="User management endpoints")
-facade = HBnBFacade()
+
 
 
 # --- serializers (password excluded) ---
@@ -53,8 +55,9 @@ def _public_user_dict(user):
         "last_name": user.last_name,
         "email": user.email,
         "is_admin": getattr(user, "is_admin", False),
-        "created_at": user.created_at.isoformat() if getattr(user, "created_at", None) else None,
-        "updated_at": user.updated_at.isoformat() if getattr(user, "updated_at", None) else None,
+        "created_at": user.created_at.isoformat() if hasattr(getattr(user, "created_at", None), "isoformat") else getattr(user, "created_at", None),
+	"updated_at": user.updated_at.isoformat() if hasattr(getattr(user, "updated_at", None), "isoformat") else getattr(user, "updated_at", None),
+
     }
 
 

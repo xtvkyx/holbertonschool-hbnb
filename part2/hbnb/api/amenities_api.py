@@ -1,8 +1,8 @@
 from flask_restx import Namespace, Resource, fields
-from hbnb.facade.hbnb_facade import HBnBFacade
+from hbnb.facade import get_facade
 
+facade = get_facade()
 
-facade = HBnBFacade()
 
 amenities_ns = Namespace("amenities", description="Amenity operations")
 
