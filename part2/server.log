@@ -5,8 +5,11 @@
  * Running on http://127.0.0.1:5001
  * Running on http://10.42.174.120:5001
 [33mPress CTRL+C to quit[0m
-127.0.0.1 - - [06/Jan/2026 20:15:42] "[35m[1mPOST /api/v1/amenities HTTP/1.1[0m" 201 -
-127.0.0.1 - - [06/Jan/2026 20:16:25] "GET /api/v1/amenities HTTP/1.1" 200 -
-127.0.0.1 - - [06/Jan/2026 20:17:00] "GET /api/v1/amenities/105ab979-282f-4354-bc73-2cda8ab5dde3 HTTP/1.1" 200 -
-127.0.0.1 - - [06/Jan/2026 20:17:33] "PUT /api/v1/amenities/105ab979-282f-4354-bc73-2cda8ab5dde3 HTTP/1.1" 200 -
-127.0.0.1 - - [06/Jan/2026 20:17:44] "GET /api/v1/amenities/105ab979-282f-4354-bc73-2cda8ab5dde3 HTTP/1.1" 200 -
+127.0.0.1 - - [06/Jan/2026 23:38:50] "[35m[1mPOST /api/v1/users/ HTTP/1.1[0m" 201 -
+127.0.0.1 - - [06/Jan/2026 23:39:52] "[35m[1mPOST /api/v1/amenities HTTP/1.1[0m" 201 -
+127.0.0.1 - - [06/Jan/2026 23:41:19] "[35m[1mPOST /api/v1/places HTTP/1.1[0m" 201 -
+127.0.0.1 - - [06/Jan/2026 23:42:48] "[35m[1mPOST /api/v1/reviews HTTP/1.1[0m" 201 -
+127.0.0.1 - - [06/Jan/2026 23:47:50] "GET /api/v1/places/0b93b369-a694-42dd-ad98-fb50b29a92ab/reviews HTTP/1.1" 200 -
+127.0.0.1 - - [06/Jan/2026 23:48:46] "PUT /api/v1/reviews/832f9f09-074a-42bf-b0d7-71e19e35bbb2 HTTP/1.1" 200 -
+127.0.0.1 - - [06/Jan/2026 23:51:30] "DELETE /api/v1/reviews/832f9f09-074a-42bf-b0d7-71e19e35bbb2 HTTP/1.1" 200 -
+127.0.0.1 - - [06/Jan/2026 23:53:13] "[33mGET /api/v1/reviews/832f9f09-074a-42bf-b0d7-71e19e35bbb2 HTTP/1.1[0m" 404 -

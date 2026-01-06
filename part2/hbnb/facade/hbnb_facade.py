@@ -1,22 +1,21 @@
 """Facade to simplify communication between API and business/persistence."""
 from __future__ import annotations
 
-from typing import Dict, List, Optional, Any
+from typing import Any, Dict, List, Optional
 
 from hbnb.persistence.repository import InMemoryRepository
 from hbnb.business.models.user import User
 from hbnb.business.models.amenity import Amenity
 from hbnb.business.models.place import Place
+from hbnb.business.models.review import Review
 
 
 class HBnBFacade:
     def __init__(self) -> None:
         self.repo = InMemoryRepository()
 
-        # Enforce unique email for users
+        # Enforce unique fields
         self.repo.register_unique_field("User", "email")
-
-        # Enforce unique name for amenities
         self.repo.register_unique_field("Amenity", "name")
 
     # =====================================================
@@ -58,9 +57,11 @@ class HBnBFacade:
     # =====================================================
     # Amenities
     # =====================================================
-    def create_amenity(self, name: str) -> Amenity:
+    def create_amenity(self, name: str, description: str | None = None) -> Amenity:
+        # description موجودة فقط للتوافق لو API عندك يرسلها؛ ما نستخدمها بالموديل.
         if name is None or not str(name).strip():
             raise ValueError("Amenity name is required")
+
         amenity = Amenity(name=str(name).strip())
         return self.repo.add(amenity)
 
@@ -84,7 +85,7 @@ class HBnBFacade:
         return self.repo.update(amenity)
 
     # =====================================================
-    # Helpers (Places)
+    # Helpers (Places/Reviews)
     # =====================================================
     @staticmethod
     def _validate_required_str(value: Any, field: str) -> str:
@@ -104,6 +105,25 @@ class HBnBFacade:
             raise ValueError("price_per_night must be >= 0")
         return value
 
+    @staticmethod
+    def _validate_rating_any(value: Any) -> int:
+        if value is None:
+            raise ValueError("rating is required")
+        if not isinstance(value, int):
+            try:
+                value = int(value)
+            except (TypeError, ValueError):
+                raise ValueError("rating must be an integer")
+        if value < 1 or value > 5:
+            raise ValueError("rating must be between 1 and 5")
+        return value
+
+    @staticmethod
+    def _validate_comment(value: Any) -> str:
+        if value is None or not isinstance(value, str) or not value.strip():
+            raise ValueError("comment must be a non-empty string")
+        return value.strip()
+
     def _resolve_owner(self, owner_id: str) -> User:
         owner = self.repo.get(User, owner_id)
         if owner is None:
@@ -120,6 +140,18 @@ class HBnBFacade:
         return amenities
 
     def _place_to_dict(self, place: Place, owner: User, amenities: list[Amenity]) -> dict:
+        reviews = []
+        for rid in getattr(place, "review_ids", []) or []:
+            r = self.repo.get(Review, rid)
+            if r is not None:
+                reviews.append({
+                    "id": r.id,
+                    "user_id": r.user_id,
+                    "place_id": r.place_id,
+                    "rating": r.rating,
+                    "comment": r.comment,
+                })
+
         return {
             "id": place.id,
             "title": place.title,
@@ -134,6 +166,7 @@ class HBnBFacade:
                 "email": owner.email,
             },
             "amenities": [{"id": a.id, "name": a.name} for a in amenities],
+            "reviews": reviews,
         }
 
     # =====================================================
@@ -204,6 +237,7 @@ class HBnBFacade:
         if "longitude" in data:
             place.longitude = Place._validate_lng(data.get("longitude"))
 
+        # amenities update
         amenities: list[Amenity] = []
         if "amenity_ids" in data:
             amenity_ids = data.get("amenity_ids") or []
@@ -223,3 +257,114 @@ class HBnBFacade:
         saved = self.repo.update(place)
         owner = self._resolve_owner(saved.owner_id)
         return self._place_to_dict(saved, owner, amenities)
+
+    # =====================================================
+    # Reviews
+    # =====================================================
+    def _review_to_dict(self, review: Review) -> dict:
+        return {
+            "id": review.id,
+            "user_id": review.user_id,
+            "place_id": review.place_id,
+            "rating": review.rating,
+            "comment": review.comment,
+        }
+
+    def create_review(self, data: Dict) -> dict:
+        user_id = self._validate_required_str(data.get("user_id"), "user_id")
+        place_id = self._validate_required_str(data.get("place_id"), "place_id")
+        rating = self._validate_rating_any(data.get("rating"))
+
+        comment_in = data.get("comment", data.get("text"))
+        comment = self._validate_comment(comment_in)
+
+        user = self.repo.get(User, user_id)
+        if user is None:
+            raise KeyError("User not found")
+
+        place = self.repo.get(Place, place_id)
+        if place is None:
+            raise KeyError("Place not found")
+
+        review = Review(user_id=user_id, place_id=place_id, rating=rating, comment=comment)
+        saved = self.repo.add(review)
+
+        # link review to place
+        if hasattr(place, "link_review"):
+            place.link_review(saved.id)
+        elif hasattr(place, "review_ids"):
+            if saved.id not in place.review_ids:
+                place.review_ids.append(saved.id)
+
+        self.repo.update(place)
+        return self._review_to_dict(saved)
+
+    def get_review(self, review_id: str) -> Optional[dict]:
+        review = self.repo.get(Review, review_id)
+        if review is None:
+            return None
+        return self._review_to_dict(review)
+
+    def get_reviews(self) -> List[dict]:
+        return [self._review_to_dict(r) for r in self.repo.list(Review)]
+
+    def update_review(self, review_id: str, data: Dict) -> dict:
+        review = self.repo.get(Review, review_id)
+        if review is None:
+            raise KeyError("Review not found")
+
+        rating = data.get("rating") if "rating" in data else None
+        comment = data.get("comment", data.get("text")) if ("comment" in data or "text" in data) else None
+
+        if rating is not None:
+            rating = self._validate_rating_any(rating)
+        if comment is not None:
+            comment = self._validate_comment(comment)
+
+        if hasattr(review, "update_review"):
+            review.update_review(rating=rating, comment=comment)
+        else:
+            if rating is not None:
+                review.rating = rating
+            if comment is not None:
+                review.comment = comment
+
+        saved = self.repo.update(review)
+        return self._review_to_dict(saved)
+
+    def delete_review(self, review_id: str) -> None:
+        review = self.repo.get(Review, review_id)
+        if review is None:
+            raise KeyError("Review not found")
+
+        # unlink from place
+        place = self.repo.get(Place, review.place_id)
+        if place is not None and hasattr(place, "review_ids"):
+            if review_id in place.review_ids:
+                place.review_ids = [rid for rid in place.review_ids if rid != review_id]
+                self.repo.update(place)
+
+        # delete from repository (support different repo implementations)
+        if hasattr(self.repo, "delete"):
+            self.repo.delete(Review, review_id)
+            return
+        if hasattr(self.repo, "remove"):
+            self.repo.remove(Review, review_id)
+            return
+        if hasattr(self.repo, "_storage"):
+            self.repo._storage.get("Review", {}).pop(review_id, None)
+            return
+
+        raise ValueError("Repository does not support delete operation")
+
+    def get_place_reviews(self, place_id: str) -> List[dict]:
+        place = self.repo.get(Place, place_id)
+        if place is None:
+            raise KeyError("Place not found")
+
+        reviews: List[dict] = []
+        for rid in getattr(place, "review_ids", []) or []:
+            r = self.repo.get(Review, rid)
+            if r is not None:
+                reviews.append(self._review_to_dict(r))
+        return reviews
