@@ -5,6 +5,7 @@ from typing import Dict, List
 
 from hbnb.persistence.repository import InMemoryRepository
 from hbnb.business.models.user import User
+from hbnb.business.models.amenity import Amenity
 
 
 class HBnBFacade:
@@ -12,6 +13,8 @@ class HBnBFacade:
         self.repo = InMemoryRepository()
         # Enforce unique email for users
         self.repo.register_unique_field("User", "email")
+        # Enforce unique name for amenities
+        self.repo.register_unique_field("Amenity", "name")
 
     # -------- Users --------
     def create_user(self, data: Dict) -> User:
@@ -35,7 +38,6 @@ class HBnBFacade:
         if user is None:
             raise KeyError("User not found")
 
-        # Only allow updating these fields
         if "first_name" in data:
             user.first_name = User._validate_name(data["first_name"], "first_name")
         if "last_name" in data:
@@ -43,9 +45,42 @@ class HBnBFacade:
         if "email" in data:
             user.email = User._validate_email(data["email"])
 
-        # DO NOT allow password updates in this task
-        # If you want to explicitly reject it:
         if "password" in data or "password_hash" in data:
             raise ValueError("Password update is not allowed here")
 
         return self.repo.update(user)
+
+    # -------- Amenities --------
+    def create_amenity(self, name: str, description: str | None = None) -> Amenity:
+        if name is None or not str(name).strip():
+            raise ValueError("Amenity name is required")
+
+        amenity = Amenity(name=str(name).strip())
+
+        if description is not None and hasattr(amenity, "description"):
+            amenity.description = str(description).strip()
+
+        return self.repo.add(amenity)
+
+    def get_amenity(self, amenity_id: str) -> Amenity | None:
+        return self.repo.get(Amenity, amenity_id)
+
+    def get_amenities(self) -> List[Amenity]:
+        return self.repo.list(Amenity)
+
+    def update_amenity(self, amenity_id: str, data: Dict) -> Amenity | None:
+        amenity = self.get_amenity(amenity_id)
+        if amenity is None:
+            return None
+
+        if "name" in data:
+            new_name = data.get("name")
+            if new_name is None or not str(new_name).strip():
+                raise ValueError("Amenity name cannot be empty")
+            amenity.name = str(new_name).strip()
+
+        if "description" in data and hasattr(amenity, "description"):
+            desc = data.get("description")
+            amenity.description = "" if desc is None else str(desc).strip()
+
+        return self.repo.update(amenity)
