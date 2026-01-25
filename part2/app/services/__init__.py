@@ -1,8 +1,9 @@
-"""Facade package init.
+"""Services package init.
 
 Expose a single shared facade instance for the whole app.
 """
-from hbnb.facade.hbnb_facade import HBnBFacade
+
+from app.services.hbnb_facade import HBnBFacade
 
 _facade = HBnBFacade()
 
@@ -10,4 +11,3 @@ _facade = HBnBFacade()
 def get_facade() -> HBnBFacade:
     """Return the shared facade instance."""
     return _facade
-
