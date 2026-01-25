@@ -3,6 +3,8 @@ from flask_jwt_extended import jwt_required, get_jwt_identity
 from hbnb.extensions import db, bcrypt
 from hbnb.models.user import User
 from hbnb.api.v1.admin_utils import admin_required
+from hbnb.facade import HBnBFacade
+facade = HBnBFacade()
 
 users_bp = Blueprint("users", __name__)
 
