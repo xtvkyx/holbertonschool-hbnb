@@ -1,22 +1,19 @@
-"""Base model for in-memory entities."""
-from __future__ import annotations
-from dataclasses import dataclass, field
-from datetime import datetime
 import uuid
+from datetime import datetime
 
-
-@dataclass
 class BaseModel:
-    id: str = field(default_factory=lambda: str(uuid.uuid4()))
-    created_at: str = field(default_factory=lambda: datetime.utcnow().isoformat())
-    updated_at: str = field(default_factory=lambda: datetime.utcnow().isoformat())
+    def __init__(self):
+        self.id = str(uuid.uuid4())
+        self.created_at = datetime.utcnow()
+        self.updated_at = datetime.utcnow()
 
-    def touch(self) -> None:
-        self.updated_at = datetime.utcnow().isoformat()
+    def save(self):
+        """Update updated_at timestamp"""
+        self.updated_at = datetime.utcnow()
 
-    def to_dict(self) -> dict:
-        return {
-            "id": self.id,
-            "created_at": self.created_at,
-            "updated_at": self.updated_at,
-        }
+    def update(self, data: dict):
+        """Update attributes and save"""
+        for key, value in data.items():
+            if hasattr(self, key):
+                setattr(self, key, value)
+        self.save()

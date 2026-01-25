@@ -1,50 +1,24 @@
-#!/usr/bin/python3
-"""Review model."""
-
-from .base import BaseModel
-
+from app.models.base import BaseModel
 
 class Review(BaseModel):
-    """Represents a review written by a user about a place."""
+    def __init__(self, text, rating, user, place):
+        super().__init__()
 
-    def __init__(
-        self,
-        user_id: str,
-        place_id: str,
-        rating: int,
-        comment: str = "",
-        **kwargs
-    ):
-        super().__init__(**kwargs)
+        if not text:
+            raise ValueError("Text is required")
 
-        self.user_id = self._validate_id(user_id, "user_id")
-        self.place_id = self._validate_id(place_id, "place_id")
-        self.rating = self._validate_rating(rating)
-        self.comment = self._validate_comment(comment)
+        if not isinstance(rating, int) or not (1 <= rating <= 5):
+            raise ValueError("Rating must be an integer between 1 and 5")
 
-    @staticmethod
-    def _validate_id(value: str, field: str) -> str:
-        if not isinstance(value, str) or not value.strip():
-            raise ValueError(f"{field} must be a non-empty string")
-        return value.strip()
+        # user must look like a User object
+        if user is None or not hasattr(user, "id") or not hasattr(user, "email"):
+            raise ValueError("Invalid user object")
 
-    @staticmethod
-    def _validate_rating(rating: int) -> int:
-        if not isinstance(rating, int):
-            raise ValueError("rating must be an integer")
-        if rating < 1 or rating > 5:
-            raise ValueError("rating must be between 1 and 5")
-        return rating
+        # place must look like a Place object
+        if place is None or not hasattr(place, "id") or not hasattr(place, "title"):
+            raise ValueError("Invalid place object")
 
-    @staticmethod
-    def _validate_comment(comment: str) -> str:
-        if not isinstance(comment, str):
-            raise ValueError("comment must be a string")
-        return comment.strip()
-
-    def update_review(self, rating=None, comment=None) -> None:
-        if rating is not None:
-            self.rating = self._validate_rating(rating)
-        if comment is not None:
-            self.comment = self._validate_comment(comment)
-        self.updated_at = self._now() if hasattr(self, "_now") else self.updated_at
+        self.text = text
+        self.rating = rating
+        self.user = user
+        self.place = place
