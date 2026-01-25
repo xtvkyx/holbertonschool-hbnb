@@ -1,14 +1,17 @@
 from hbnb.models.user import User
-from hbnb.repositories.sqlalchemy_repository import SQLAlchemyRepository
+from hbnb.repositories.user_repository import UserRepository
 
 
 class HBnBFacade:
-    """Facade for user operations using SQLAlchemyRepository."""
+    """Facade using UserRepository for user operations."""
 
     def __init__(self, user_repo=None):
-        self.user_repo = user_repo or SQLAlchemyRepository()
+        self.user_repo = user_repo or UserRepository()
 
     def create_user(self, email: str, password: str, **kwargs) -> User:
+        if self.user_repo.get_by_email(email):
+            raise ValueError("email already exists")
+
         user = User(
             email=email,
             is_admin=bool(kwargs.get("is_admin", False))
@@ -27,3 +30,4 @@ class HBnBFacade:
 
     def list_users(self):
         return self.user_repo.get_all(User)
+
