@@ -1,6 +1,7 @@
 from app.extensions import db
 
 class SQLAlchemyRepository:
+    """Generic SQLAlchemy repository for basic CRUD operations."""
     def __init__(self, model):
         self.model = model
 

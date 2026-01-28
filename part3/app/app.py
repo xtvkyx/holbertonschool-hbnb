@@ -1,5 +1,5 @@
 from flask import Flask
-from app.config import Config
+from config import Config
 from app.extensions import db, jwt, bcrypt
 
 def create_app():
@@ -13,4 +13,8 @@ def create_app():
     from app.api.v1.auth import auth_bp
     app.register_blueprint(auth_bp, url_prefix="/api/v1")
 
+    from app.api.v1.routes import blueprint as api_v1_blueprint
+    app.register_blueprint(api_v1_blueprint)
+
     return app
+

@@ -11,7 +11,7 @@ class HBnBFacade:
         self.reviews = SQLAlchemyRepository(Review)
         self.amenities = SQLAlchemyRepository(Amenity)
 
-    # Users
+    # ---------- Users ----------
     def create_user(self, **data):
         return self.users.create(**data)
 
@@ -21,7 +21,7 @@ class HBnBFacade:
     def list_users(self):
         return self.users.list()
 
-    # Places
+    # ---------- Places ----------
     def create_place(self, **data):
         return self.places.create(**data)
 
@@ -42,7 +42,7 @@ class HBnBFacade:
         self.places.delete(obj)
         return True
 
-    # Reviews
+    # ---------- Reviews ----------
     def create_review(self, **data):
         return self.reviews.create(**data)
 
@@ -63,7 +63,7 @@ class HBnBFacade:
         self.reviews.delete(obj)
         return True
 
-    # Amenities
+    # ---------- Amenities ----------
     def create_amenity(self, **data):
         return self.amenities.create(**data)
 
