@@ -1,0 +1,13 @@
+INSERT INTO users (id, email, password_hash, is_admin)
+VALUES (
+  '00000000-0000-0000-0000-000000000001',
+  'admin@hbnb.com',
+  '$2b$12$REPLACE_WITH_BCRYPT_HASH',
+  1
+);
+
+INSERT INTO amenities (id, name) VALUES
+('00000000-0000-0000-0000-000000000101', 'WiFi'),
+('00000000-0000-0000-0000-000000000102', 'Parking'),
+('00000000-0000-0000-0000-000000000103', 'Pool'),
+('00000000-0000-0000-0000-000000000104', 'Air Conditioning');
