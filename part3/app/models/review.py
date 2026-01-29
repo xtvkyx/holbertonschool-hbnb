@@ -8,9 +8,13 @@ class Review(db.Model):
     text = db.Column(db.Text, nullable=False)
     rating = db.Column(db.Integer, nullable=True)
 
-    # No relationships / No foreign keys in Task 7
-    user_id = db.Column(db.String(36), nullable=True)
-    place_id = db.Column(db.String(36), nullable=True)
+    # FKs (Task 8)
+    user_id = db.Column(db.String(36), db.ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
+    place_id = db.Column(db.String(36), db.ForeignKey("places.id", ondelete="CASCADE"), nullable=False)
+
+    # Relationships (Task 8)
+    user = db.relationship("User", back_populates="reviews")
+    place = db.relationship("Place", back_populates="reviews")
 
     def to_dict(self) -> dict:
         return {

@@ -1,5 +1,6 @@
 import uuid
 from app.extensions import db
+from app.models.associations import place_amenity
 
 class Place(db.Model):
     __tablename__ = "places"
@@ -11,8 +12,18 @@ class Place(db.Model):
     latitude = db.Column(db.Float, nullable=True)
     longitude = db.Column(db.Float, nullable=True)
 
-    # No relationships / No foreign keys in Task 7
-    owner_id = db.Column(db.String(36), nullable=True)
+    # FK (Task 8)
+    owner_id = db.Column(db.String(36), db.ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
+
+    # Relationships (Task 8)
+    owner = db.relationship("User", back_populates="places")
+    reviews = db.relationship("Review", back_populates="place", cascade="all, delete-orphan")
+
+    amenities = db.relationship(
+        "Amenity",
+        secondary=place_amenity,
+        back_populates="places",
+    )
 
     def to_dict(self) -> dict:
         return {
