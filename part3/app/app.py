@@ -1,20 +1,36 @@
 from flask import Flask
-from config import Config
 from app.extensions import db, jwt, bcrypt
+from app.api.v1.routes import blueprint as api_v1_blueprint
 
-def create_app():
+def create_app(config_name="default"):
     app = Flask(__name__)
-    app.config.from_object(Config)
+
+    # BASIC CONFIG (for tests)
+    app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///:memory:"
+    app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+    app.config["JWT_SECRET_KEY"] = "test-secret"
 
     db.init_app(app)
     jwt.init_app(app)
     bcrypt.init_app(app)
 
-    from app.api.v1.auth import auth_bp
-    app.register_blueprint(auth_bp, url_prefix="/api/v1")
+    # ✅ FORCE JWT ERRORS TO RETURN 401
+    @jwt.unauthorized_loader
+    def missing_token_callback(error):
+        return {"error": "Missing Authorization Header"}, 401
 
-    from app.api.v1.routes import blueprint as api_v1_blueprint
+    @jwt.invalid_token_loader
+    def invalid_token_callback(error):
+        return {"error": "Invalid token"}, 401
+
+    @jwt.expired_token_loader
+    def expired_token_callback(jwt_header, jwt_payload):
+        return {"error": "Token expired"}, 401
+
     app.register_blueprint(api_v1_blueprint)
+
+    with app.app_context():
+        db.create_all()
 
     return app
 

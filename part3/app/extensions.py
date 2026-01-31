@@ -5,3 +5,4 @@ from flask_bcrypt import Bcrypt
 db = SQLAlchemy()
 jwt = JWTManager()
 bcrypt = Bcrypt()
+
