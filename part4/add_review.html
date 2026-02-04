@@ -2,46 +2,54 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>HBnB | Add Review</title>
-  <link rel="icon" href="icon.png">
+  <title>Add Review | HBnB</title>
   <link rel="stylesheet" href="styles.css">
+  <link rel="icon" href="icon.png">
 </head>
+
 <body>
 
-<header>
-  <div class="header-inner">
+  <!-- Header -->
+  <header>
     <img src="logo.png" alt="HBnB Logo" class="logo">
-    <a href="index.html" class="login-button">Home</a>
-  </div>
-</header>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="login.html" class="login-button">Login</a>
+    </nav>
+  </header>
 
-<main>
+  <!-- Main Content -->
+  <main>
+    <h1>Reviewing: Beautiful Beach House</h1>
 
-  <h1 class="page-title">Reviewing: Beautiful Beach House</h1>
+    <section class="add-review">
+      <h2>Add a Review</h2>
 
-  <form class="form">
-    <label for="review">Your Review:</label>
-    <textarea id="review" required></textarea>
+      <form class="form">
 
-    <label for="rating">Rating:</label>
-    <select id="rating" required>
-      <option>1 Star</option>
-      <option>2 Stars</option>
-      <option>3 Stars</option>
-      <option>4 Stars</option>
-      <option>5 Stars</option>
-    </select>
+        <label for="review">Your Review:</label>
+        <textarea id="review" name="review" required></textarea>
 
-    <button type="submit">Submit Review</button>
-  </form>
+        <label for="rating">Rating:</label>
+        <select id="rating" name="rating" required>
+          <option value="" selected disabled>Select rating</option>
+          <option value="1">1 Star</option>
+          <option value="2">2 Stars</option>
+          <option value="3">3 Stars</option>
+          <option value="4">4 Stars</option>
+          <option value="5">5 Stars</option>
+        </select>
 
-</main>
+        <button type="submit">Submit Review</button>
 
-<footer>
-  <div class="footer-inner">
-    © 2024 HBnB Evolution. All rights reserved.
-  </div>
-</footer>
+      </form>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <p>© 2024 HBnB Evolution. All rights reserved.</p>
+  </footer>
 
 </body>
 </html>
