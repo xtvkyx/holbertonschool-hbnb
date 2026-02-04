@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>HBnB - Places</title>
+  <link rel="icon" href="icon.png">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header>
+    <div class="header-inner">
+      <a href="index.html" aria-label="Go to home">
+        <img src="logo.png" alt="HBnB Logo" class="logo">
+      </a>
+
+      <nav aria-label="Main navigation">
+        <ul>
+          <li><a href="index.html">Places</a></li>
+          <li><a href="login.html">Login</a></li>
+        </ul>
+      </nav>
+
+      <a class="login-button" href="login.html">Login</a>
+    </div>
+  </header>
+
+  <main>
+    <h1 class="page-title">Places</h1>
+
+    <!-- later you will fill this dynamically with JS -->
+    <section class="grid" aria-label="Places list">
+      <article class="place-card">
+        <h2>Cozy Apartment</h2>
+        <p class="price">Price per night: $120</p>
+        <a class="details-button" href="place.html?id=1">View Details</a>
+      </article>
+
+      <article class="place-card">
+        <h2>Modern Studio</h2>
+        <p class="price">Price per night: $90</p>
+        <a class="details-button" href="place.html?id=2">View Details</a>
+      </article>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+      <p>All rights reserved.</p>
+    </div>
+  </footer>
+</body>
+</html>

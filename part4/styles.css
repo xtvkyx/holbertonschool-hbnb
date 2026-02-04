@@ -1,0 +1,200 @@
+/* Basic reset */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: #f7f7fb;
+  color: #222;
+}
+
+header {
+  background: #ffffff;
+  border-bottom: 1px solid #e6e6ef;
+  padding: 12px 20px;
+}
+
+.header-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  justify-content: space-between;
+}
+
+.logo {
+  height: 40px;
+}
+
+nav ul {
+  list-style: none;
+  display: flex;
+  gap: 14px;
+  align-items: center;
+}
+
+nav a {
+  text-decoration: none;
+  color: #222;
+  padding: 8px 10px;
+  border-radius: 8px;
+}
+
+nav a:hover {
+  background: #f0f0f8;
+}
+
+.login-button {
+  text-decoration: none;
+  padding: 8px 12px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  background: #fff;
+  color: #222;
+}
+
+.login-button:hover {
+  background: #f0f0f8;
+}
+
+main {
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 20px;
+  flex: 1;
+}
+
+.page-title {
+  margin-bottom: 16px;
+  font-size: 24px;
+}
+
+.grid {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+}
+
+/* REQUIRED CARD STYLE */
+.place-card,
+.review-card {
+  margin: 20px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  background: #ffffff;
+}
+
+.place-card h2 {
+  font-size: 18px;
+  margin-bottom: 6px;
+}
+
+.price {
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.details-button {
+  display: inline-block;
+  padding: 8px 12px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  background: #fff;
+  color: #222;
+  text-decoration: none;
+}
+
+.details-button:hover {
+  background: #f0f0f8;
+}
+
+/* Place details */
+.place-details {
+  margin-top: 10px;
+}
+
+.place-info {
+  margin: 20px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  background: #ffffff;
+}
+
+.section-title {
+  margin: 16px 20px 8px;
+  font-size: 18px;
+}
+
+.list {
+  margin: 0 20px 20px;
+  padding-left: 18px;
+}
+
+.add-review {
+  margin: 20px;
+}
+
+.form {
+  margin: 20px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  background: #ffffff;
+  max-width: 520px;
+}
+
+.form label {
+  display: block;
+  margin-top: 10px;
+  margin-bottom: 6px;
+}
+
+.form input,
+.form select,
+.form textarea {
+  width: 100%;
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+}
+
+.form textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+.form button {
+  margin-top: 12px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  background: #fff;
+  cursor: pointer;
+}
+
+.form button:hover {
+  background: #f0f0f8;
+}
+
+footer {
+  border-top: 1px solid #e6e6ef;
+  background: #ffffff;
+  padding: 14px 20px;
+}
+
+.footer-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  text-align: center;
+  color: #555;
+}
