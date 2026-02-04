@@ -1,75 +1,60 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>HBnB - Place Details</title>
+  <meta charset="UTF-8">
+  <title>HBnB | Place Details</title>
   <link rel="icon" href="icon.png">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <header>
-    <div class="header-inner">
-      <a href="index.html" aria-label="Go to home">
-        <img src="logo.png" alt="HBnB Logo" class="logo">
-      </a>
 
-      <nav aria-label="Main navigation">
-        <ul>
-          <li><a href="index.html">Places</a></li>
-          <li><a href="login.html">Login</a></li>
-        </ul>
-      </nav>
+<header>
+  <div class="header-inner">
+    <img src="logo.png" alt="HBnB Logo" class="logo">
+    <a href="login.html" class="login-button">Login</a>
+  </div>
+</header>
 
-      <a class="login-button" href="login.html">Login</a>
+<main>
+
+  <h1 class="place-title">Beautiful Beach House</h1>
+
+  <section class="place-details">
+    <div class="place-info">
+      <p><strong>Host:</strong> John Doe</p>
+      <p><strong>Price per night:</strong> $150</p>
+      <p><strong>Description:</strong> A beautiful beach house with amazing views.</p>
+      <p><strong>Amenities:</strong> WiFi, Pool, Air Conditioning</p>
     </div>
-  </header>
+  </section>
 
-  <main>
-    <h1 class="page-title">Place Details</h1>
+  <h2 class="section-title">Reviews</h2>
 
-    <section class="place-details" aria-label="Place details">
-      <div class="place-info">
-        <h2>Cozy Apartment</h2>
-        <p><strong>Host:</strong> John Doe</p>
-        <p><strong>Price per night:</strong> $120</p>
-        <p><strong>Description:</strong> A comfortable place close to the city center.</p>
-      </div>
+  <div class="reviews-wrap">
+    <article class="review-card">
+      <p><strong>Jane Smith:</strong></p>
+      <p>Great place to stay!</p>
+      <p>Rating: ★★★★☆</p>
+    </article>
 
-      <h3 class="section-title">Amenities</h3>
-      <ul class="list">
-        <li>Wi-Fi</li>
-        <li>Parking</li>
-        <li>Air conditioning</li>
-      </ul>
-    </section>
+    <article class="review-card">
+      <p><strong>Robert Brown:</strong></p>
+      <p>Amazing location and very comfortable.</p>
+      <p>Rating: ★★★★★</p>
+    </article>
+  </div>
 
-    <section aria-label="Reviews">
-      <h3 class="section-title">Reviews</h3>
+  <div class="add-review">
+    <a href="add_review.html" class="details-button">Add Review</a>
+  </div>
 
-      <article class="review-card">
-        <p><strong>User:</strong> Raneem</p>
-        <p><strong>Rating:</strong> 5</p>
-        <p>Very clean and great location.</p>
-      </article>
+</main>
 
-      <article class="review-card">
-        <p><strong>User:</strong> Sara</p>
-        <p><strong>Rating:</strong> 4</p>
-        <p>Nice place but a little noisy at night.</p>
-      </article>
-    </section>
+<footer>
+  <div class="footer-inner">
+    © 2024 HBnB Evolution. All rights reserved.
+  </div>
+</footer>
 
-    <div class="add-review">
-      <!-- later: show only if logged in -->
-      <a class="details-button" href="add_review.html?place_id=1">Add Review</a>
-    </div>
-  </main>
-
-  <footer>
-    <div class="footer-inner">
-      <p>All rights reserved.</p>
-    </div>
-  </footer>
 </body>
 </html>

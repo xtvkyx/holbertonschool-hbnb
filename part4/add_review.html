@@ -1,55 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>HBnB - Add Review</title>
+  <meta charset="UTF-8">
+  <title>HBnB | Add Review</title>
   <link rel="icon" href="icon.png">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <header>
-    <div class="header-inner">
-      <a href="index.html" aria-label="Go to home">
-        <img src="logo.png" alt="HBnB Logo" class="logo">
-      </a>
 
-      <nav aria-label="Main navigation">
-        <ul>
-          <li><a href="index.html">Places</a></li>
-          <li><a href="login.html">Login</a></li>
-        </ul>
-      </nav>
+<header>
+  <div class="header-inner">
+    <img src="logo.png" alt="HBnB Logo" class="logo">
+    <a href="index.html" class="login-button">Home</a>
+  </div>
+</header>
 
-      <a class="login-button" href="login.html">Login</a>
-    </div>
-  </header>
+<main>
 
-  <main>
-    <h1 class="page-title">Add Review</h1>
+  <h1 class="page-title">Reviewing: Beautiful Beach House</h1>
 
-    <form class="form" action="#" method="post">
-      <label for="rating">Rating</label>
-      <select id="rating" name="rating" required>
-        <option value="">Select</option>
-        <option value="1">1</option>
-        <option value="2">2</option>
-        <option value="3">3</option>
-        <option value="4">4</option>
-        <option value="5">5</option>
-      </select>
+  <form class="form">
+    <label for="review">Your Review:</label>
+    <textarea id="review" required></textarea>
 
-      <label for="comment">Comment</label>
-      <textarea id="comment" name="comment" required></textarea>
+    <label for="rating">Rating:</label>
+    <select id="rating" required>
+      <option>1 Star</option>
+      <option>2 Stars</option>
+      <option>3 Stars</option>
+      <option>4 Stars</option>
+      <option>5 Stars</option>
+    </select>
 
-      <button type="submit">Submit Review</button>
-    </form>
-  </main>
+    <button type="submit">Submit Review</button>
+  </form>
 
-  <footer>
-    <div class="footer-inner">
-      <p>All rights reserved.</p>
-    </div>
-  </footer>
+</main>
+
+<footer>
+  <div class="footer-inner">
+    © 2024 HBnB Evolution. All rights reserved.
+  </div>
+</footer>
+
 </body>
 </html>
