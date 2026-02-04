@@ -41,7 +41,7 @@ header {
   background: rgba(255, 255, 255, 0.18);
 }
 
-/* optional nav (if you have it) */
+/* optional nav */
 nav ul {
   list-style: none;
   display: flex;
@@ -73,7 +73,7 @@ main {
   margin: 28px 0 18px;
 }
 
-/* filter row like sample */
+/* filter row */
 .filter-row {
   display: flex;
   justify-content: center;
@@ -105,7 +105,7 @@ main {
   .grid { grid-template-columns: 1fr; }
 }
 
-/* REQUIRED CARD STYLE (keep these exact) */
+/* REQUIRED CARD STYLE */
 .place-card,
 .review-card {
   margin: 20px;
@@ -114,7 +114,7 @@ main {
   border-radius: 10px;
 }
 
-/* extra styling like sample */
+/* extra styling */
 .place-card,
 .review-card,
 .place-info,
@@ -140,9 +140,10 @@ main {
   font-size: 18px;
 }
 
+/* 🔴 RED BUTTON */
 .details-button {
   display: inline-block;
-  background: #f49b12;
+  background: #e53935;
   color: #fff;
   text-decoration: none;
   padding: 10px 18px;
@@ -151,7 +152,7 @@ main {
 }
 
 .details-button:hover {
-  filter: brightness(0.95);
+  background: #c62828;
 }
 
 /* ---------- Place Details ---------- */
@@ -233,15 +234,19 @@ main {
   background: #fff;
 }
 
-.form textarea { min-height: 120px; resize: vertical; }
+.form textarea {
+  min-height: 120px;
+  resize: vertical;
+}
 
+/* 🔴 RED FORM BUTTON */
 .form button {
   width: 100%;
   margin-top: 18px;
   padding: 14px 12px;
   border: none;
   border-radius: 8px;
-  background: #f49b12;
+  background: #e53935;
   color: #fff;
   font-weight: 800;
   font-size: 16px;
@@ -249,12 +254,12 @@ main {
 }
 
 .form button:hover {
-  filter: brightness(0.95);
+  background: #c62828;
 }
 
 /* ---------- Footer ---------- */
 footer {
-  background: #f49b12;
+  background: #e53935;
   color: #fff;
   padding: 18px 0;
 }
