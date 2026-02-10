@@ -27,10 +27,9 @@ async function loginUser(email, password) {
     throw new Error(msg);
   }
 
-  // token key might differ depending on your API
-  const token = data.access_token || data.token || data.jwt;
+  const token = data.access_token;
   if (!token) {
-    throw new Error("Login succeeded but no token returned.");
+    throw new Error("Login succeeded but no access_token returned.");
   }
 
   return token;
@@ -59,3 +58,4 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 });
+
