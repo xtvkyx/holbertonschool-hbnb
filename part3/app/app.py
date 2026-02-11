@@ -13,8 +13,12 @@ def create_app(config_name="default"):
     db.init_app(app)
     jwt.init_app(app)
     bcrypt.init_app(app)
-
-    # ✅ FORCE JWT ERRORS TO RETURN 401
+from app.models.user import User
+from app.models.place import Place
+from app.models.review import Review
+from app.models.amenity import Amenity
+from app.models.place_amenity import place_amenity 
+# ✅ FORCE JWT ERRORS TO RETURN 401
     @jwt.unauthorized_loader
     def missing_token_callback(error):
         return {"error": "Missing Authorization Header"}, 401

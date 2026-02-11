@@ -1,45 +1,27 @@
-from flask import request
-from flask_restx import Namespace, Resource, fields
-from flask_jwt_extended import jwt_required
+from app.extensions import db
+from sqlalchemy import Column, String, Float, ForeignKey
+from sqlalchemy.orm import relationship
+import uuid
 
-from app.services.hbnb_facade import HBnBFacade
+class Place(db.Model):
+    __tablename__ = "places"
 
-places_api = Namespace("places", description="Places operations")
-facade = HBnBFacade()
+    id = Column(String(60), primary_key=True, default=lambda: str(uuid.uuid4()))
+    title = Column(String(100), nullable=False)
+    description = Column(String(1024), nullable=True)
+    price = Column(Float, nullable=False)
+    owner_id = Column(String(60), ForeignKey("users.id"), nullable=False)
 
-place_model = places_api.model("Place", {
-    "id": fields.String(readonly=True),
-    "title": fields.String(required=True),
-    "description": fields.String,
-    "price": fields.Float,
-    "latitude": fields.Float,
-    "longitude": fields.Float,
-    "owner_id": fields.String,
-})
+    owner = relationship("User", back_populates="places")
+    reviews = relationship("Review", back_populates="place", cascade="all, delete-orphan")
+    amenities = relationship("Amenity", secondary="place_amenity", back_populates="places")
 
-
-@places_api.route("/")
-class PlaceList(Resource):
-
-    @places_api.marshal_list_with(place_model)
-    def get(self):
-        return facade.list_places()
-
-    # ✅ JWT FIRST — so missing token returns 401
-    @jwt_required()
-    @places_api.expect(place_model, validate=True)
-    @places_api.marshal_with(place_model, code=201)
-    def post(self):
-        data = request.get_json() or {}
-
-        place = facade.create_place(
-            title=data.get("title"),
-            description=data.get("description"),
-            price=data.get("price", 0.0),
-            latitude=data.get("latitude"),
-            longitude=data.get("longitude"),
-            owner_id=data.get("owner_id"),
-        )
-
-        return place, 201
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "title": self.title,
+            "description": self.description,
+            "price": self.price,
+            "owner_id": self.owner_id
+        }
 
