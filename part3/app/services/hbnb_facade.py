@@ -1,0 +1,85 @@
+from app.persistence.repository import SQLAlchemyRepository
+from app.models.user import User
+from app.models.place import Place
+from app.models.review import Review
+from app.models.amenity import Amenity
+
+class HBnBFacade:
+    def __init__(self):
+        self.users = SQLAlchemyRepository(User)
+        self.places = SQLAlchemyRepository(Place)
+        self.reviews = SQLAlchemyRepository(Review)
+        self.amenities = SQLAlchemyRepository(Amenity)
+
+    # Users
+    def create_user(self, **data):
+        return self.users.create(**data)
+
+    def get_user(self, user_id):
+        return self.users.get(user_id)
+
+    def list_users(self):
+        return self.users.list()
+
+    # Places
+    def create_place(self, **data):
+        return self.places.create(**data)
+
+    def get_place(self, place_id):
+        return self.places.get(place_id)
+
+    def list_places(self):
+        return self.places.list()
+
+    def update_place(self, place_id, **data):
+        obj = self.get_place(place_id)
+        return None if obj is None else self.places.update(obj, **data)
+
+    def delete_place(self, place_id):
+        obj = self.get_place(place_id)
+        if obj is None:
+            return False
+        self.places.delete(obj)
+        return True
+
+    # Reviews
+    def create_review(self, **data):
+        return self.reviews.create(**data)
+
+    def get_review(self, review_id):
+        return self.reviews.get(review_id)
+
+    def list_reviews(self):
+        return self.reviews.list()
+
+    def update_review(self, review_id, **data):
+        obj = self.get_review(review_id)
+        return None if obj is None else self.reviews.update(obj, **data)
+
+    def delete_review(self, review_id):
+        obj = self.get_review(review_id)
+        if obj is None:
+            return False
+        self.reviews.delete(obj)
+        return True
+
+    # Amenities
+    def create_amenity(self, **data):
+        return self.amenities.create(**data)
+
+    def get_amenity(self, amenity_id):
+        return self.amenities.get(amenity_id)
+
+    def list_amenities(self):
+        return self.amenities.list()
+
+    def update_amenity(self, amenity_id, **data):
+        obj = self.get_amenity(amenity_id)
+        return None if obj is None else self.amenities.update(obj, **data)
+
+    def delete_amenity(self, amenity_id):
+        obj = self.get_amenity(amenity_id)
+        if obj is None:
+            return False
+        self.amenities.delete(obj)
+        return True

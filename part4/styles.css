@@ -1,0 +1,272 @@
+/* ---------- Base ---------- */
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f2f2f2;
+  color: #111;
+}
+
+a { color: inherit; }
+
+/* ---------- Header ---------- */
+header {
+  background: #e53935;
+  padding: 16px 0;
+}
+
+.header-inner {
+  width: min(1100px, calc(100% - 40px));
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logo {
+  height: 36px;
+  display: block;
+}
+
+.login-button {
+  color: #fff;
+  text-decoration: none;
+  font-weight: 700;
+  padding: 10px 14px;
+  border-radius: 10px;
+}
+
+.login-button:hover {
+  background: rgba(255, 255, 255, 0.18);
+}
+
+/* optional nav */
+nav ul {
+  list-style: none;
+  display: flex;
+  gap: 14px;
+  padding: 0;
+  margin: 0;
+}
+nav a {
+  text-decoration: none;
+  color: #fff;
+  font-weight: 600;
+  padding: 10px 12px;
+  border-radius: 10px;
+}
+nav a:hover {
+  background: rgba(255, 255, 255, 0.18);
+}
+
+/* ---------- Main Layout ---------- */
+main {
+  width: min(1100px, calc(100% - 40px));
+  margin: 0 auto;
+  padding: 26px 0 40px;
+}
+
+.page-title {
+  text-align: center;
+  font-size: 44px;
+  margin: 28px 0 18px;
+}
+
+/* filter row */
+.filter-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 24px;
+  font-weight: 700;
+}
+
+.filter-row select {
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background: #fff;
+}
+
+/* ---------- Cards Grid ---------- */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(220px, 1fr));
+  gap: 24px;
+  justify-items: center;
+}
+
+@media (max-width: 950px) {
+  .grid { grid-template-columns: repeat(2, minmax(220px, 1fr)); }
+}
+@media (max-width: 650px) {
+  .grid { grid-template-columns: 1fr; }
+}
+
+/* REQUIRED CARD STYLE */
+.place-card,
+.review-card {
+  margin: 20px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+}
+
+/* extra styling */
+.place-card,
+.review-card,
+.place-info,
+.form {
+  background: #fff;
+  box-shadow: 0 6px 14px rgba(0,0,0,0.12);
+}
+
+.place-card {
+  width: 320px;
+  text-align: center;
+  padding: 28px 24px;
+}
+
+.place-card h2 {
+  margin: 0 0 14px;
+  font-size: 30px;
+  line-height: 1.15;
+}
+
+.price {
+  margin: 0 0 18px;
+  font-size: 18px;
+}
+
+/* 🔴 RED BUTTON */
+.details-button {
+  display: inline-block;
+  background: #e53935;
+  color: #fff;
+  text-decoration: none;
+  padding: 10px 18px;
+  border-radius: 8px;
+  font-weight: 700;
+}
+
+.details-button:hover {
+  background: #c62828;
+}
+
+/* ---------- Place Details ---------- */
+.place-details {
+  margin-top: 10px;
+}
+
+.place-title {
+  text-align: center;
+  font-size: 44px;
+  margin: 28px 0 18px;
+}
+
+.place-info {
+  width: min(850px, calc(100% - 40px));
+  margin: 18px auto 26px;
+  padding: 34px 28px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  text-align: center;
+}
+
+.place-info p {
+  margin: 10px 0;
+  font-size: 18px;
+}
+
+.section-title {
+  width: min(850px, calc(100% - 40px));
+  margin: 22px auto 12px;
+  font-size: 34px;
+}
+
+.reviews-wrap {
+  width: min(850px, calc(100% - 40px));
+  margin: 0 auto;
+}
+
+.review-card {
+  width: 100%;
+  padding: 22px 20px;
+}
+
+.review-card p {
+  margin: 8px 0;
+  font-size: 18px;
+}
+
+.add-review {
+  width: min(850px, calc(100% - 40px));
+  margin: 18px auto 0;
+  display: flex;
+  justify-content: center;
+}
+
+/* ---------- Forms ---------- */
+.form {
+  width: min(650px, calc(100% - 40px));
+  margin: 0 auto;
+  padding: 26px 22px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+}
+
+.form label {
+  display: block;
+  font-weight: 700;
+  margin: 16px 0 8px;
+}
+
+.form input,
+.form select,
+.form textarea {
+  width: 100%;
+  padding: 12px 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 16px;
+  background: #fff;
+}
+
+.form textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+/* 🔴 RED FORM BUTTON */
+.form button {
+  width: 100%;
+  margin-top: 18px;
+  padding: 14px 12px;
+  border: none;
+  border-radius: 8px;
+  background: #e53935;
+  color: #fff;
+  font-weight: 800;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.form button:hover {
+  background: #c62828;
+}
+
+/* ---------- Footer ---------- */
+footer {
+  background: #e53935;
+  color: #fff;
+  padding: 18px 0;
+}
+
+.footer-inner {
+  width: min(1100px, calc(100% - 40px));
+  margin: 0 auto;
+  text-align: center;
+  font-weight: 700;
+}
