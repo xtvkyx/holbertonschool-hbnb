@@ -5,6 +5,7 @@ class Config:
     SQLALCHEMY_DATABASE_URI = "sqlite:///hbnb.db"
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
+
     # JWT
     JWT_SECRET_KEY = "jwt-secret-key"
 

@@ -1,16 +1,16 @@
 from flask import Blueprint
-from flask_restx import Api
 
-from hbnb.api.v1.users import users_api
+api_v1 = Blueprint("api_v1", __name__)
 
-blueprint = Blueprint("api_v1", __name__, url_prefix="/api/v1")
+# Import and register sub-blueprints
+from hbnb.api.v1.auth import auth_bp
+from hbnb.api.v1.users import users_bp
+from hbnb.api.v1.places import places_bp
+from hbnb.api.v1.reviews import reviews_bp
+from hbnb.api.v1.amenities import amenities_bp
 
-api = Api(
-    blueprint,
-    title="HBnB API",
-    version="1.0",
-    description="HBnB API v1"
-)
-
-#Api has add_namespace()
-api.add_namespace(users_api, path="/users")
+api_v1.register_blueprint(auth_bp)
+api_v1.register_blueprint(users_bp)
+api_v1.register_blueprint(places_bp)
+api_v1.register_blueprint(reviews_bp)
+api_v1.register_blueprint(amenities_bp)

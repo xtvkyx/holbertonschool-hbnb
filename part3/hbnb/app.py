@@ -10,7 +10,8 @@ def create_app():
     jwt.init_app(app)
     bcrypt.init_app(app)
 
-    from hbnb.api.v1.auth import auth_bp
-    app.register_blueprint(auth_bp, url_prefix="/api/v1")
+    # Register API v1 routes
+    from hbnb.api.v1.routes import api_v1
+    app.register_blueprint(api_v1, url_prefix="/api/v1")
 
     return app
