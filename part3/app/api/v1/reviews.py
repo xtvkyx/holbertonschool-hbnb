@@ -1,5 +1,6 @@
 from flask import request
 from flask_restx import Namespace, Resource, fields
+from flask_jwt_extended import jwt_required, get_jwt_identity
 
 from app.services.hbnb_facade import HBnBFacade
 
@@ -25,12 +26,14 @@ class ReviewList(Resource):
 
     @reviews_api.expect(review_model, validate=True)
     @reviews_api.marshal_with(review_model, code=201)
+    @jwt_required()
     def post(self):
         data = request.get_json() or {}
+        user_id = get_jwt_identity()
         review = facade.create_review(
             text=data.get("text"),
             rating=data.get("rating"),
-            user_id=data.get("user_id"),
+            user_id=user_id,
             place_id=data.get("place_id"),
         )
         return review, 201

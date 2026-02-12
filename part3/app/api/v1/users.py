@@ -18,6 +18,10 @@ user_out = users_api.model("UserOut", {
 
 @users_api.route("/")
 class UsersCollection(Resource):
+    @users_api.marshal_list_with(user_out)
+    def get(self):
+        return User.query.all(), 200
+
     @users_api.expect(user_create, validate=True)
     @users_api.marshal_with(user_out, code=201)
     def post(self):

@@ -63,7 +63,14 @@ class HBnBFacade:
     # -------------------------
     def create_place(self, **data):
         from app.models.place import Place
-        place = Place(**data)
+
+        allowed = {c.name for c in Place.__table__.columns}
+        if "title" in data and "title" not in allowed and "name" in allowed:
+            data["name"] = data.pop("title")
+
+        filtered = {k: v for k, v in data.items() if k in allowed}
+
+        place = Place(**filtered)
         db.session.add(place)
         self._commit()
         return place

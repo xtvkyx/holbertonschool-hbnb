@@ -14,18 +14,18 @@
     <img src="logo.png" alt="HBnB Logo" class="logo">
     <nav>
       <a href="index.html">Home</a>
-      <a href="login.html" class="login-button">Login</a>
+      <a href="login.html" class="login-button" id="login-link">Login</a>
     </nav>
   </header>
 
   <!-- Main Content -->
   <main>
-    <h1>Reviewing: Beautiful Beach House</h1>
+    <h1 id="reviewing-title">Reviewing:</h1>
 
     <section class="add-review">
       <h2>Add a Review</h2>
 
-      <form class="form">
+      <form class="form" id="review-form">
 
         <label for="review">Your Review:</label>
         <textarea id="review" name="review" required></textarea>
@@ -42,6 +42,8 @@
 
         <button type="submit">Submit Review</button>
 
+        <p id="review-message" style="margin-top:12px; font-weight:700;"></p>
+
       </form>
     </section>
   </main>
@@ -50,6 +52,8 @@
   <footer>
     <p>© 2024 HBnB Evolution. All rights reserved.</p>
   </footer>
+
+  <script src="scripts.js"></script>
 
 </body>
 </html>

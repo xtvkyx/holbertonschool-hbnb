@@ -65,6 +65,28 @@ async function fetchPlaces(token) {
   return Array.isArray(data) ? data : [];
 }
 
+async function submitReview(token, placeId, text, rating) {
+  const url = `${API_BASE_URL}/reviews/`;
+  const response = await fetch(url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`
+    },
+    body: JSON.stringify({ place_id: placeId, text, rating })
+  });
+
+  let data = {};
+  try { data = await response.json(); } catch (e) {}
+
+  if (!response.ok) {
+    const msg = (data && (data.message || data.error)) || response.statusText || "Failed to submit review";
+    throw new Error(msg);
+  }
+
+  return data;
+}
+
 async function fetchPlaceDetails(token, placeId) {
   const url = `${API_BASE_URL}/places/${encodeURIComponent(placeId)}`;
   const headers = { "Content-Type": "application/json" };
@@ -144,6 +166,7 @@ function renderPlaceDetails(place) {
   if (!detailsEl) return;
   detailsEl.innerHTML = "";
 
+  const host = place.host || place.owner_name || place.owner || place.owner_id || "Unknown";
   const price = place.price ?? 0;
   const description = place.description || "";
 
@@ -151,6 +174,7 @@ function renderPlaceDetails(place) {
   const amenityNames = amenities.map((a) => a.name).filter(Boolean);
 
   detailsEl.innerHTML = `
+    <p><strong>Host:</strong> ${host}</p>
     <p><strong>Price per night:</strong> $${price}</p>
     <p><strong>Description:</strong> ${description}</p>
     <p><strong>Amenities:</strong> ${amenityNames.length ? amenityNames.join(", ") : "None"}</p>
@@ -287,6 +311,67 @@ document.addEventListener("DOMContentLoaded", () => {
       .catch((err) => {
         placeDetailsEl.textContent = err.message;
       });
+  }
+
+  const reviewForm = document.getElementById("review-form");
+  if (reviewForm) {
+    const token = getCookie("token");
+    if (!token) {
+      window.location.href = "index.html";
+      return;
+    }
+
+    const placeId = getPlaceIdFromURL();
+    if (!placeId) {
+      window.location.href = "index.html";
+      return;
+    }
+
+    const reviewMsgEl = document.getElementById("review-message");
+    const reviewingTitleEl = document.getElementById("reviewing-title");
+
+    if (reviewingTitleEl) {
+      fetchPlaceDetails(token, placeId)
+        .then((place) => {
+          reviewingTitleEl.textContent = `Reviewing: ${place.title || place.name || ""}`;
+        })
+        .catch(() => {
+          reviewingTitleEl.textContent = "Reviewing:";
+        });
+    }
+
+    reviewForm.addEventListener("submit", async (event) => {
+      event.preventDefault();
+
+      if (reviewMsgEl) {
+        reviewMsgEl.textContent = "";
+        reviewMsgEl.style.color = "";
+      }
+
+      const text = (document.getElementById("review").value || "").trim();
+      const ratingRaw = document.getElementById("rating").value;
+      const rating = ratingRaw ? Number(ratingRaw) : null;
+
+      try {
+        await submitReview(token, placeId, text, rating);
+        if (reviewMsgEl) {
+          reviewMsgEl.textContent = "Review submitted successfully!";
+          reviewMsgEl.style.color = "#2e7d32";
+        } else {
+          alert("Review submitted successfully!");
+        }
+
+        document.getElementById("review").value = "";
+        document.getElementById("rating").value = "";
+      } catch (err) {
+        if (reviewMsgEl) {
+          reviewMsgEl.textContent = err.message;
+          reviewMsgEl.style.color = "#c62828";
+        } else {
+          alert(err.message);
+        }
+      }
+    });
   }
 });
 
