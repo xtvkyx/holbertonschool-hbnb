@@ -15,7 +15,7 @@ amenity_model = amenities_api.model("Amenity", {
 class AmenityList(Resource):
     @amenities_api.marshal_list_with(amenity_model)
     def get(self):
-        return facade.list_amenities()
+        return facade.get_amenities()
 
     @amenities_api.expect(amenity_model, validate=True)
     @amenities_api.marshal_with(amenity_model, code=201)

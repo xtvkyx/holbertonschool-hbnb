@@ -65,6 +65,48 @@ async function fetchPlaces(token) {
   return Array.isArray(data) ? data : [];
 }
 
+async function fetchPlaceDetails(token, placeId) {
+  const url = `${API_BASE_URL}/places/${encodeURIComponent(placeId)}`;
+  const headers = { "Content-Type": "application/json" };
+  if (token) headers.Authorization = `Bearer ${token}`;
+
+  const response = await fetch(url, {
+    method: "GET",
+    headers
+  });
+
+  let data = {};
+  try { data = await response.json(); } catch (e) {}
+
+  if (!response.ok) {
+    const msg = (data && (data.message || data.error)) || response.statusText || "Failed to fetch place";
+    throw new Error(msg);
+  }
+
+  return data || {};
+}
+
+async function fetchReviewsByPlace(token, placeId) {
+  const url = `${API_BASE_URL}/reviews/?place_id=${encodeURIComponent(placeId)}`;
+  const headers = { "Content-Type": "application/json" };
+  if (token) headers.Authorization = `Bearer ${token}`;
+
+  const response = await fetch(url, {
+    method: "GET",
+    headers
+  });
+
+  let data = [];
+  try { data = await response.json(); } catch (e) {}
+
+  if (!response.ok) {
+    const msg = (data && (data.message || data.error)) || response.statusText || "Failed to fetch reviews";
+    throw new Error(msg);
+  }
+
+  return Array.isArray(data) ? data : [];
+}
+
 function renderPlaces(places) {
   const listEl = document.getElementById("places-list");
   if (!listEl) return;
@@ -86,6 +128,61 @@ function renderPlaces(places) {
     `;
 
     listEl.appendChild(card);
+  }
+}
+
+function getPlaceIdFromURL() {
+  const params = new URLSearchParams(window.location.search);
+  return params.get("id") || params.get("place_id");
+}
+
+function renderPlaceDetails(place) {
+  const titleEl = document.getElementById("place-title");
+  if (titleEl) titleEl.textContent = place.title || place.name || "Place";
+
+  const detailsEl = document.getElementById("place-details");
+  if (!detailsEl) return;
+  detailsEl.innerHTML = "";
+
+  const price = place.price ?? 0;
+  const description = place.description || "";
+
+  const amenities = Array.isArray(place.amenities) ? place.amenities : [];
+  const amenityNames = amenities.map((a) => a.name).filter(Boolean);
+
+  detailsEl.innerHTML = `
+    <p><strong>Price per night:</strong> $${price}</p>
+    <p><strong>Description:</strong> ${description}</p>
+    <p><strong>Amenities:</strong> ${amenityNames.length ? amenityNames.join(", ") : "None"}</p>
+  `;
+}
+
+function renderReviews(reviews) {
+  const wrap = document.getElementById("reviews-wrap");
+  if (!wrap) return;
+  wrap.innerHTML = "";
+
+  if (!reviews.length) {
+    const empty = document.createElement("p");
+    empty.textContent = "No reviews yet.";
+    wrap.appendChild(empty);
+    return;
+  }
+
+  for (const review of reviews) {
+    const card = document.createElement("article");
+    card.className = "review-card";
+
+    const rating = review.rating;
+    const ratingText = rating === null || rating === undefined ? "N/A" : String(rating);
+
+    card.innerHTML = `
+      <p><strong>User:</strong> ${review.user_id || "Unknown"}</p>
+      <p>${review.text || ""}</p>
+      <p>Rating: ${ratingText}</p>
+    `;
+
+    wrap.appendChild(card);
   }
 }
 
@@ -158,6 +255,38 @@ document.addEventListener("DOMContentLoaded", () => {
       const maxPrice = value === "all" ? null : Number(value);
       applyPriceFilter(maxPrice);
     });
+  }
+
+  const placeDetailsEl = document.getElementById("place-details");
+  if (placeDetailsEl) {
+    const placeId = getPlaceIdFromURL();
+    const token = getCookie("token");
+
+    const addReviewSection = document.getElementById("add-review");
+    if (addReviewSection) addReviewSection.style.display = token ? "flex" : "none";
+
+    const addReviewLink = document.getElementById("add-review-link");
+    if (addReviewLink && placeId) {
+      addReviewLink.href = `add_review.html?place_id=${encodeURIComponent(placeId)}`;
+    }
+
+    if (!placeId) {
+      placeDetailsEl.textContent = "Missing place id in URL.";
+      return;
+    }
+
+    fetchPlaceDetails(token, placeId)
+      .then((place) => {
+        renderPlaceDetails(place);
+        if (Array.isArray(place.reviews)) {
+          renderReviews(place.reviews);
+        } else {
+          return fetchReviewsByPlace(token, placeId).then(renderReviews);
+        }
+      })
+      .catch((err) => {
+        placeDetailsEl.textContent = err.message;
+      });
   }
 });
 

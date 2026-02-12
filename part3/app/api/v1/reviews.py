@@ -18,7 +18,10 @@ review_model = reviews_api.model("Review", {
 class ReviewList(Resource):
     @reviews_api.marshal_list_with(review_model)
     def get(self):
-        return facade.list_reviews()
+        place_id = request.args.get("place_id")
+        if place_id:
+            return facade.get_reviews_by_place(place_id)
+        return facade.get_reviews()
 
     @reviews_api.expect(review_model, validate=True)
     @reviews_api.marshal_with(review_model, code=201)
