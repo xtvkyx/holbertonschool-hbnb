@@ -21,7 +21,7 @@ class PlaceList(Resource):
 
     @places_api.marshal_list_with(place_model)
     def get(self):
-        return facade.list_places()
+        return facade.get_places()
 
     @jwt_required()  # ✅ MUST be first
     @places_api.expect(place_model, validate=True)
