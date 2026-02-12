@@ -9,7 +9,7 @@ function setCookie(name, value, days = 1) {
 }
 
 async function loginUser(email, password) {
-  const url = `${API_BASE_URL}/auth/login`;
+  const url = `${API_BASE_URL}/login`;
 
   const response = await fetch(url, {
     method: "POST",

@@ -1,12 +1,10 @@
 from app.app import create_app
-from app.extensions import db, bcrypt
+from app.extensions import db
 from app.models.user import User
 
 def seed_user():
     email = "test@example.com"
     password = "Test12345!"   # كلمة مرور معروفة
-    first_name = "Test"
-    last_name = "User"
     is_admin = True
 
     # إذا موجود لا تعيد إنشاءه
@@ -17,16 +15,8 @@ def seed_user():
         print("PASSWORD:", password)
         return
 
-    # خزّنها كهاش (المفروض موديلك يسويها أو نسويها هنا)
-    hashed = bcrypt.generate_password_hash(password).decode("utf-8")
-
-    u = User(
-        email=email,
-        first_name=first_name,
-        last_name=last_name,
-        password=hashed,      # أو password_hash حسب اسم العمود عندك
-        is_admin=is_admin
-    )
+    u = User(email=email, is_admin=is_admin)
+    u.set_password(password)
 
     db.session.add(u)
     db.session.commit()
